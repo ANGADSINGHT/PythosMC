@@ -1,1 +1,0 @@
-# Player object and metadata

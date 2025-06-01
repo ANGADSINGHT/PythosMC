@@ -1,5 +1,5 @@
-from Pythos.packets.core import read_varint, read_string
-import struct
+from Pythos.packets.core import read_varint, read_string, write_varint
+from json import dumps
 
 async def handshake(writer, resource_state: int, data) -> None:
     print(f"Handshake State: {resource_state}")

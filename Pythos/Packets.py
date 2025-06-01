@@ -8,6 +8,9 @@ async def handlePacket(data, writer) -> None:
     packet_len, offset = read_varint(data)
     packet_id, id_len = read_varint(data[offset:])
     offset += id_len
+    
+    if packet_id not in PACKET_FUNCTIONS:
+        return print(f"Packet unhandled with ID: {packet_id}")
 
     # Handshake Packet
     if packet_id == 0x00:

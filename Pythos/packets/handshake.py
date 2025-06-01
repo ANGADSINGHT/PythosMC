@@ -1,6 +1,7 @@
 from json import dumps
 
-async def handshake(writer, data, resource_state: int) -> None:
+async def handshake(writer, resource_state: int, data) -> None:
+    print(f"Handshake State: {resource_state}")
     if resource_state == 0:
         # Just get the next state (at end of packet)
         # We're skipping version/hostname/port parsing here
@@ -9,6 +10,7 @@ async def handshake(writer, data, resource_state: int) -> None:
             print("Client wants status")
         else:
             print("Unsupported next state")
+            
     elif resource_state == 1:
         response = {
             "version": {"name": "1.16.5", "protocol": 754},

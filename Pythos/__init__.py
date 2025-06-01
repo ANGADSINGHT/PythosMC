@@ -1,15 +1,13 @@
 import asyncio
-from Pythos.Packets import handlePacket
 
 async def handle_client(reader, writer):
-    addr = writer.get_extra_info('peername')
     try:
         while True:
             data = await reader.read(1024)
             if not data:
                 break
             
-            await handlePacket(data, writer)
+            # Server logic
     finally:
         writer.close()
         await writer.wait_closed()

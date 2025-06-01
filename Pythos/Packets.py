@@ -5,6 +5,7 @@ PACKET_FUNCTIONS = {
 }
 
 async def handlePacket(data, writer) -> None:
+    print("------NEW PACKET-------")
     packet_len, offset = read_varint(data)
     packet_id, id_len = read_varint(data[offset:])
     offset += id_len

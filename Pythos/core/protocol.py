@@ -1,5 +1,7 @@
 from Pythos.core.utils.helpers import encode_varint
 import Pythos.core.status.pong as pong
+from nbtlib import File, Compound
+from io import BytesIO
 
 PACKET_FUNCTIONS = {
     0x00: pong.pong,   # Status request (MOTD)
@@ -40,3 +42,25 @@ async def handle_packet(packet_id, payload) -> bytes | None:
         return await PACKET_FUNCTIONS[packet_id](payload)
     
     return None
+
+def encode_string(s: str) -> bytes:
+    encoded = s.encode('utf-8')
+    return encode_varint(len(encoded)) + encoded
+
+async def read_string(data: bytes, offset=0):
+    length, n = await read_varint_from_bytes(data, offset)
+    offset += n
+    string_bytes = data[offset:offset+length]
+    return string_bytes.decode('utf-8'), offset + length
+
+def build_packet(packet_id: int, payload: bytes) -> bytes:
+    packet_id_bytes = encode_varint(packet_id)
+    packet = packet_id_bytes + payload
+    return encode_varint(len(packet)) + packet
+
+def encode_nbt(nbt_file):
+    buffer = BytesIO()
+    nbt_file.write(buffer)
+    return buffer.getvalue()
+
+

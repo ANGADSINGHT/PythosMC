@@ -7,7 +7,8 @@ async def handle_client(reader, writer) -> None:
     await connection.handle(reader, writer)
 
     await writer.drain()
-    return writer.close()
+    writer.close()
+    await writer.wait_closed()
 
 async def main(IP: int, PORT: int) -> None:
     start_time = time.perf_counter()
